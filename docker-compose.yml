@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    networks:
+      - mongo_net
+
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    networks:
+      - mongo_net
+
+  demo-spring-native:
+    container_name: demo-spring-native
+    image: demo-spring-native:0.0.1-SNAPSHOT
+    ports:
+      - 8080:8080
+    environment:
+      - "MONGO_URI=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017/db_test?authSource=admin"
+    depends_on:
+      - mongo
+    networks:
+      - mongo_net
+
+networks:
+  mongo_net:
