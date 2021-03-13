@@ -26,7 +26,7 @@ If you do not have make installed you can execute the following commands to comp
 
 **Notice:** You should have docker and docker-compose installed
 
-## Calling endpoints
+## Call endpoints
 
 - List users
   ```sh
